@@ -16,9 +16,7 @@ Each numbered folder contains a `README.md` — the write-up: what happened, why
 
 ## Why
 
-A public log of the subtle things Go lets you do that will one day cost you a debugging evening. Written for readers who've shipped Go, not for people learning it.
-
-Not a tutorial. Not a beginners' guide. Not "Effective Go". Assumes you've read that already and want your remaining assumptions punctured.
+A public log of the subtle things Go lets you do that will one day cost you a debugging evening.
 
 ## Canon (further reading worth your time)
 
