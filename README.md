@@ -2,20 +2,17 @@
 
 Subtle Go behaviors that are easy to miss and hard to debug. Working Go, doing exactly what the spec says — and biting you anyway.
 
-One folder per finding: write-up next to a runnable reproducer. `git clone`, `go run`, see the point.
+One folder per finding: write-up, embedded code, and — where it helps — a runnable reproducer.
 
 ## Findings
 
 | # | Finding | The trap |
 |---|---------|----------|
-| — | *(added one at a time via PR)* | |
+| 01 | [`strings.Fields` vs `strings.Split`](./01-strings-fields-vs-split) | `strings.Split(s, " ")` returns empty tokens on adjacent spaces and doesn't split on tabs/newlines. `strings.Fields` splits on any Unicode whitespace and skips empties. |
 
 ## Format
 
-Each numbered folder contains:
-
-- `README.md` — the write-up: what happened, why it bit, how to spot it in review, how to fix it
-- `main.go` — minimal reproducer, no dependencies, runs standalone
+Each numbered folder contains a `README.md` — the write-up: what happened, why it bit, how to spot it in review, how to fix it. Code samples are embedded inline; some findings also include a runnable `main.go` reproducer alongside.
 
 ## Why
 
