@@ -26,7 +26,7 @@ func unique(nums []int) []int {
 }
 ```
 
-It works, but it's quadratic. The idiomatic Go answer — and what an interviewer asking to "see map usage" wants — is a **map as a set**: O(1) membership, O(n) overall.
+It works, but it's quadratic. The idiomatic Go answer is a **map as a set**: O(1) membership, O(n) overall.
 
 **Trap 2 — building the result by ranging the map.** Once you have a map, it's tempting to skip the result slice and just range the keys. But **Go deliberately randomizes map iteration order**, so your unique values come out in a *different order on every run*.
 
