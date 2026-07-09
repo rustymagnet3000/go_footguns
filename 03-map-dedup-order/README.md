@@ -36,11 +36,11 @@ Map for **membership**, slice for **order**. Append to the slice the first time 
 
 ```go
 func unique(nums []int) []int {
-    seen := make(map[int]struct{})
+    seen := make(map[int]bool)
     out := make([]int, 0, len(nums))
     for _, n := range nums {
-        if _, ok := seen[n]; !ok { // comma-ok membership test
-            seen[n] = struct{}{}   // add to the set
+        if !seen[n] {              // first time we've seen this value?
+            seen[n] = true         // mark as seen
             out = append(out, n)   // record first-seen order
         }
     }
@@ -48,17 +48,17 @@ func unique(nums []int) []int {
 }
 ```
 
-- `map[int]struct{}` is the zero-byte **set** idiom: the value carries no information, so `struct{}{}` costs no memory per entry. (`map[int]bool` also works and reads a touch friendlier as `if seen[n]`; it just stores a pointless bool.)
-- `_, ok := seen[n]` is the **comma-ok** test: `ok` is `true` iff the key is present.
+- `map[int]bool` is the set: the value just marks presence, so `if !seen[n]` reads cleanly. A missing key returns the zero value `false`, so you never need a separate "does it exist?" check.
+- The zero-byte `map[int]struct{}` variant (`seen[n] = struct{}{}`, tested with comma-ok `_, ok := seen[n]`) saves the pointless bool byte — see the empty-struct entry for why `struct{}{}` looks the way it does. `map[int]bool` is just as correct and easier to read.
 
 ## What breaks if you range the map for output
 
 ```go
 // BUG: order is nondeterministic
 func uniqueBad(nums []int) []int {
-    seen := make(map[int]struct{})
+    seen := make(map[int]bool)
     for _, n := range nums {
-        seen[n] = struct{}{}
+        seen[n] = true
     }
 
     out := make([]int, 0, len(seen))
@@ -115,7 +115,22 @@ func main() {
 }
 ```
 
-Run it (a couple of times over): the lines won't all match. Same map, same code, different order — proof the range order is not something to build on.
+A real run of exactly this printed:
+
+```
+[3 1 2]
+[3 1 2]
+[3 1 2]
+[3 1 2]
+[3 1 2]
+[3 1 2]
+[3 1 2]
+[3 1 2]
+[3 1 2]
+[1 2 3]
+```
+
+Nine times the same, once different — same map, same code, different order. That single deviant line is the whole point: if map order were stable it could never appear. And notice it prints the "natural" `[3 1 2]` ~90% of the time — which is exactly how a couple of manual runs fool you into thinking order is preserved. (The 9-to-1 skew is explained in the section above.)
 
 ## When each is right
 
