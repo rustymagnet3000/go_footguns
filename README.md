@@ -11,6 +11,7 @@ One folder per finding: write-up, embedded code, and — where it helps — a ru
 | 01 | [`strings.Fields` vs `strings.Split`](./01-strings-fields-vs-split) | `strings.Split(s, " ")` returns empty tokens on adjacent spaces and doesn't split on tabs/newlines. `strings.Fields` splits on any Unicode whitespace and skips empties. |
 | 02 | [parallel assignment binds positionally](./02-parallel-assignment) | `i, j := 0, len-1` pairs by position (not both `0`); the whole right side is evaluated before any write, so `a[i], i = 99, 2` writes `a[0]`, not `a[2]`. |
 | 03 | [map dedup & iteration order](./03-map-dedup-order) | A map dedups a slice in O(n) (vs the nested-loop O(n²) trap), but ranging the map for the result gives a different order every run — map iteration is randomized by design. Keep a slice for order. |
+| 04 | [ignored errors fail *open*](./04-error-fail-open) | A security check whose only failure signal is an `error` silently *passes* when that error is discarded. Go lets you drop it as a bare statement; exception-based languages would crash instead. |
 
 ## Format
 
